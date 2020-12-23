@@ -1,0 +1,131 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>Test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <link href="Style/StyleSheet.css" rel="stylesheet" type="text/css" />
+    <link href="Style/fonts.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style type="text/css">
+        h2 > .fa
+        {
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="Container" id="ParentItems">
+        <!--<div class="BoxItems">
+            <div class="ImageBox">
+                <img src="college.png" alt="Image1" />
+                <div class="OverLay">
+                    <div class="Header_1">
+                        <div class="div_PromotedIcon">
+                            Promoted</div>
+                        <div class="BoxIconSqure">
+                            <p class="color_white">
+                                <span>3.9/5</span>
+                                <br />
+                                Very Good</p>
+                        </div>
+                    </div>
+                    <div class="Header_2">
+                        <a href="" class="button_round">best college 2020</a> <a href="" class="button_round">
+                            2KM Away</a> <a href="" class="Linkbutton ">#7 in 260 colleges</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ContentBox">
+                <div class="Contentox_LeftSide">
+                    <div class="Container p_lr10">
+                        <h2>
+                            hansraj College Delhi University</h2>
+                        <p>
+                            <span class="color_Black"><b>Near visvvidhyalya metro station </b></span><span class="color_lightGray">
+                                2 km away from bus-stand</span></p>
+                        <p>
+                            <span class="color_sky"><b>93% matched</b></span> <span><b>2.5 KM </b></span><span
+                                class="color_lightGray">from GTB Nagar, </span><span><b>7 Kms </b></span><span class="color_lightGray">
+                                    from Rajiv Chock</span></p>
+                    </div>
+                    <div class="OfferDiv">
+                        <b><span>Flat Rs.<span class="color_sky">200</span> Off + upto <span class="color_sky">
+                            500</span> wallet to avail...<a href="" class="color_sky">LOGIN</a></span> </b>
+                    </div>
+                </div>
+                <div class="Contentox_rightSide">
+                    <div class="Container p_lr10 p_tb10">
+                        <div class="PriceDiv">
+                            <b><strike>#6999</strike></b>
+                            <div class="Pricebgarrow color_white">
+                                <b>* 20</b>
+                            </div>
+                        </div>
+                        <div class="PriceDiv">
+                            <h1 class="color_red">
+                                5,767</h1>
+                            <p class="color_lightGray">
+                                per Semester(3 Month)</p>
+                            <p>
+                                <b><a class="color_sky" href="#">Fee cancellation</a><a class="icon_dot"> </a><a
+                                    class="color_sky" href="#">Free Wifi</a></b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.getJSON("colleges.json", function (json) {
+                var Result = json.colleges; $("#ParentItems").empty();
+                $.each(Result, function (key, value) {
+                    var tags = '';
+                    $.each(value.tags, function (index, value1) {
+                        tags = tags + '<a href="" class="button_round">' + value1 + '</a> ';
+                    });
+                    var str = '<div class="BoxItems"><div class="ImageBox"> <img src="' + value.image + '" alt="Image1" /><div class="OverLay"><div class="Header_1">';
+                    if (value.promoted == true) {
+                        str = str + '<div class="div_PromotedIcon">Promoted</div>';
+                    }
+                    str = str + '<div class="BoxIconSqure"><p class="color_white"><span>3.9/5</span><br />' + value.rating_remarks + '</p></div></div><div class="Header_2">' + tags + '<a href="" class="Linkbutton ">' + value.ranking + '</a></div></div></div>';
+                    var stars = '';
+                    var starcount = value.rating;
+                    for (var i = 0; i < 5; i++) {
+                        if (i < starcount) {
+                            stars = stars + '<i class="fa fa-star bgDark"style="color:#6d6969"></i>';
+                        } else {
+                            stars = stars + '<i class="fa fa-star " style="color:#d0d0d0"></i>';
+                        }
+                    }
+                    str = str + '<div class="ContentBox"><div class="Contentox_LeftSide"><div class="Container p_lr10"><h2>' + value.college_name + stars + '</h2><p>';
+                    var add2 = '';
+                    $.each(value.nearest_place, function (index, value2) {
+                        if (index == 0) {
+                            add2 = add2 + '<span class="color_Black"><b>' + value2 + '</b></span> | ';
+                        } else {
+                            add2 = add2 + '<span class="color_lightGray">' + value2 + '</span>';
+                        }
+                    });
+
+                    str = str + add2 + '<p><span class="color_sky"><b></b></span> <span>' + value.famous_nearest_places + '</p></div><div class="OfferDiv"><b>' + value.offertext + '</b></div></div>';
+                    str = str + '<div class="Contentox_rightSide"><div class="Container p_lr10 p_tb10"><div class="PriceDiv"><b><strike><i class="fa fa-inr "></i>' + value.original_fees + '</strike></b><div class="Pricebgarrow color_white"><b>* ' + value.discount + '</b></div></div><div class="PriceDiv"><h1 class="color_red"><i class="fa fa-inr "></i>' + value.discounted_fees + '</h1><p class="color_lightGray">' + value.fees_cycle + '</p>';
+                    var amenties = '';
+                    $.each(value.amenties, function (index, value3) {
+                        amenties = amenties + '<a class="color_sky" href="#">' + value3 + '</a><a class="icon_dot">';
+                    });
+                    str = str + '<p><b>' + amenties + '</b></p>';
+                    str = str + '</div></div></div></div></div>';
+                    $("#ParentItems").append(str);
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
